@@ -60,7 +60,7 @@ public class TextDetailsFragment extends Fragment {
         if(getArguments() != null) {
             mode = getArguments().getInt(Tags.MODE);
             id = getArguments().getLong(Tags.ID);
-            if(mode == UPDATE) {
+            if(mode == Mode.UPDATE) {
                 mContact = getArguments().getString(Tags.CONTACT);
                 mDate = getArguments().getString(Tags.DATE);
                 mTime = getArguments().getString(Tags.TIME);

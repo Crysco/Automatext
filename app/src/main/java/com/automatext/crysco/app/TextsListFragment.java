@@ -64,7 +64,7 @@ public class TextsListFragment extends Fragment {
     private void checkForEmptyEntries() {
         for(Entry entry : entries) {
             if(entry.getContact().contains("(empty)"))
-                communicator.updateEntries(entry.getId(), null, null, null, null, null, 0, DELETE);
+                communicator.updateEntries(entry.getId(), null, null, null, null, null, 0, Mode.DELETE);
         }
     }
 
@@ -81,7 +81,7 @@ public class TextsListFragment extends Fragment {
         entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                communicator.respond(entries.get(i).getId(), UPDATE);
+                communicator.respond(entries.get(i).getId(), Mode.UPDATE);
             }
         });
     }
@@ -93,13 +93,13 @@ public class TextsListFragment extends Fragment {
                 DBAdapter.getInstance().open();
                 long newId = DBAdapter.getInstance().insertEntry("(empty)", "", "", "", "", 0);
                 DBAdapter.getInstance().close();
-                communicator.respond(newId, NEW);
+                communicator.respond(newId, Mode.NEW);
             }
         });
     }
 
     public void updateList(long id, String name, String date, String time, String content, int frequency, int mode) {
-        if(mode == NEW)
+        if(mode == Mode.NEW)
             entries.add(new Entry(name, date, time, content, frequency, id));
         else {
             int index = -1;
@@ -112,13 +112,13 @@ public class TextsListFragment extends Fragment {
             if(index == -1)
                 Log.d(TAG, "Could not locate entry.");
             else {
-                if(mode == UPDATE) {
+                if(mode == Mode.UPDATE) {
                     entries.get(index).setContact(name);
                     entries.get(index).setDate(date);
                     entries.get(index).setTime(time);
                     entries.get(index).setContent(content);
                     entries.get(index).setFrequency(frequency);
-                } else if (mode == DELETE)
+                } else if (mode == Mode.DELETE)
                     entries.remove(index);
             }
         }

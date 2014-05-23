@@ -72,7 +72,7 @@ public class TextsListActivity extends FragmentActivity implements TextsListFrag
     @Override
     public void respond(long id, int mode) {
             Bundle bundle = new Bundle();
-            if(mode == UPDATE) {
+            if(mode == Mode.UPDATE) {
                 DBAdapter.getInstance().open();
                 Cursor cursor = DBAdapter.getInstance().getEntry(id);
                 if(cursor != null && cursor.moveToFirst()) {

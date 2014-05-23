@@ -97,7 +97,7 @@ public class MessageSender extends IntentService {
             cal.setTime(newDate);
             switch(frequency) {
                 case Frequency.ONCE:
-                    TextsListActivity.instance.updateEntries(id, null, null, null, null, null, frequency, DELETE);
+                    TextsListActivity.instance.updateEntries(id, null, null, null, null, null, frequency, Mode.DELETE);
                     break;
                 case Frequency.DAILY:
                     cal.add(Calendar.DAY_OF_MONTH, 1);
@@ -111,7 +111,7 @@ public class MessageSender extends IntentService {
             }
             newDate = cal.getTime();
             newDateString = new SimpleDateFormat("MM/dd/yyyy").format(newDate);
-            TextsListActivity.instance.updateEntries(id, contact, number, newDateString, time, content, frequency, UPDATE);
+            TextsListActivity.instance.updateEntries(id, contact, number, newDateString, time, content, frequency, Mode.UPDATE);
         } catch (ParseException e) {
             e.printStackTrace();
         }

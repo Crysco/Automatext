@@ -11,9 +11,7 @@ import android.view.WindowManager;
  * Created by Crys on 5/14/14.
  */
 public class GlobalConstants {
-    public static final int NEW = 0;
-    public static final int UPDATE = 1;
-    public static final int DELETE = 2;
+
     public static final String TAG = "TAG";
     private static Display display;
     public static int SCREEN_WIDTH;
@@ -44,6 +42,12 @@ public class GlobalConstants {
             SCREEN_HEIGHT = size.y;
         } else
             SCREEN_HEIGHT = display.getHeight();
+    }
+
+    public interface Mode {
+        public static final int NEW = 0;
+        public static final int UPDATE = 1;
+        public static final int DELETE = 2;
     }
 
     public interface Frequency {
