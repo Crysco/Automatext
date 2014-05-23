@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Automatext</string>
+    <string name="add_text">Add Entry</string>
+    <string name="action_settings">Settings</string>
+    <string name="date">Date:</string>
+    <string name="time">Time:</string>
+    <string name="text">Text:</string>
+    <string name="save">Save</string>
+    <string name="to">To:</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="title_activity_edit_text">EditTextActivity</string>
+
+    <String name="message_sender">MessageSender</String>
+
+    <string name="input">Input here...</string>
+    <string name="title_activity_auto_reply">AutoReplyActivity</string>
+    <string name="hello_world">Hello world!</string>
+
+</resources>

@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerEdit"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/corkboard"
+    tools:context="com.automatext.crysco.app.TextDetailsActivity"
+    android:weightSum="1"
+    android:clickable="true">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/space"
+        android:layout_weight="0.05" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.75"
+        android:weightSum="1"
+        android:layout_below="@+id/space"
+        android:id="@+id/relativeLayoutNote"
+        android:background="@drawable/note_yellow"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.175">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Content"
+                android:id="@+id/textViewTitle"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:textSize="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center_vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="*"
+                android:id="@+id/textViewChanged"
+                android:textColor="@color/Red"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@+id/separator"
+                android:textSize="50dp"
+                android:paddingRight="10dp"
+                android:paddingTop="25dp" />
+
+            <View
+                android:layout_height="2dp"
+                android:layout_width="fill_parent"
+                android:id="@+id/separator"
+                android:background="@color/Salmon"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.125"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TO:"
+                android:id="@+id/textViewTitleContact"
+                android:textSize="16dp"
+                android:layout_alignTop="@+id/textViewContact"
+                android:layout_alignBottom="@+id/textViewContact"
+                android:gravity="center_vertical"
+                android:paddingRight="3dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewContact"
+                android:textSize="16dp"
+                android:layout_toLeftOf="@+id/imageViewContact"
+                android:layout_toRightOf="@+id/textViewTitleContact"
+                android:layout_centerVertical="true"
+                android:textColor="#646464" />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/imageViewContact"
+                android:src="@drawable/pencil"
+                android:clickable="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.125"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DATE:"
+                android:id="@+id/textViewTitleDate"
+                android:layout_alignTop="@+id/textViewDate"
+                android:gravity="center_vertical"
+                android:layout_alignBottom="@+id/textViewDate"
+                android:paddingRight="3dp"
+                android:textSize="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewDate"
+                android:textSize="16dp"
+                android:layout_toLeftOf="@+id/imageViewDate"
+                android:layout_toRightOf="@+id/textViewTitleDate"
+                android:layout_centerVertical="true"
+                android:textColor="#646464" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/imageViewDate"
+                android:src="@drawable/pencil"
+                android:clickable="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.125"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TIME:"
+                android:id="@+id/textViewTitleTime"
+                android:textSize="16dp"
+                android:layout_alignTop="@+id/textViewTime"
+                android:layout_alignBottom="@+id/textViewTime"
+                android:gravity="center_vertical"
+                android:paddingRight="3dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewTime"
+                android:textSize="16dp"
+                android:layout_toLeftOf="@+id/imageViewTime"
+                android:layout_toRightOf="@+id/textViewTitleTime"
+                android:layout_centerVertical="true"
+                android:textColor="#646464" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/imageViewTime"
+                android:src="@drawable/pencil"
+                android:clickable="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.45"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TEXT:"
+                android:id="@+id/textViewTitleContent"
+                android:textSize="16dp"
+                android:paddingRight="3dp"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/textViewContent"
+                android:textSize="16dp"
+                android:layout_alignLeft="@+id/editTextContent"
+                android:layout_alignStart="@+id/editTextContent"
+                android:layout_toLeftOf="@+id/imageViewContent"
+                android:layout_alignTop="@+id/textViewTitleContent"
+                android:textColor="#646464" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:id="@+id/editTextContent"
+                android:layout_toLeftOf="@+id/imageViewContent"
+                android:layout_toRightOf="@+id/textViewTitleContent"
+                android:layout_alignParentBottom="true"
+                android:layout_alignTop="@+id/textViewContent"
+                android:focusable="true" />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageViewContent"
+                android:src="@drawable/pencil"
+                android:clickable="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:paddingTop="7dp" />
+
+            </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        android:gravity="center_horizontal"
+        android:id="@+id/relativeLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/relativeLayoutNote">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Once"
+            android:id="@+id/textViewOnce" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewMonthly"
+            android:src="@drawable/checkbox"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textViewMonthly"
+            android:clickable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Monthly"
+            android:id="@+id/textViewMonthly"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imageViewWeekly"
+            android:layout_marginLeft="25dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewWeekly"
+            android:src="@drawable/checkbox"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textViewWeekly"
+            android:clickable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Weekly"
+            android:id="@+id/textViewWeekly"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imageViewDaily"
+            android:layout_marginLeft="25dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewDaily"
+            android:src="@drawable/checkbox"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textViewDaily"
+            android:clickable="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Daily"
+            android:id="@+id/textViewDaily"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/imageViewOnce"
+            android:layout_marginLeft="25dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewOnce"
+            android:src="@drawable/checkbox"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textViewOnce"
+            android:clickable="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Screen"
+            android:id="@+id/buttonScreenChange"
+            android:layout_below="@+id/imageViewOnce"
+            android:layout_alignLeft="@+id/textViewOnce"
+            android:layout_alignStart="@+id/textViewOnce" />
+    </RelativeLayout>
+
+</LinearLayout>
