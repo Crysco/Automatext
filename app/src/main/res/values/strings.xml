@@ -15,8 +15,12 @@
 
     <String name="message_sender">MessageSender</String>
 
+    <Sring name="font_not_found">Font Not Found</Sring>
+
     <string name="input">Input here...</string>
     <string name="title_activity_auto_reply">AutoReplyActivity</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_auto_reply_details">AutoReplyDetails</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>

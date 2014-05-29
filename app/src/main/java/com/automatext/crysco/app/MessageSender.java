@@ -7,18 +7,27 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Handler;
 import android.telephony.SmsManager;
-import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 /**
  * Created by Crys on 5/14/14.
  */
 public class MessageSender extends IntentService {
+
+    private static MessageSender instance;
+    public static MessageSender getInstance() {
+        if(instance == null)
+            instance = new MessageSender();
+
+        return instance;
+    }
+
+    private static Communicator communicator;
+
     Handler mHandler;
 
     public MessageSender() {
@@ -32,11 +41,11 @@ public class MessageSender extends IntentService {
             synchronized (this) {
                 try {
                     wait(6000);
-                    DBAdapter.getInstance().open();
-                    if(DBAdapter.getInstance().getCount() != 0) {
+                    DBAdapter.getMainDBInstance().open();
+                    if(DatabaseEntries.getInstance().getRecordsCount() != 0) {
                         checkingEntries();
                     }
-                    DBAdapter.getInstance().close();
+                    DBAdapter.getMainDBInstance().close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -46,41 +55,30 @@ public class MessageSender extends IntentService {
 
     private void checkingEntries() {
 
-        DBAdapter.getInstance().open();
-        if(DBAdapter.getInstance().getCount() != 0) {
-            String currentDate = new SimpleDateFormat("MM/dd/yyyy").format(new Date());
-            String currentHour = new SimpleDateFormat("hh").format(new Date());
-            String currentMeridian = new SimpleDateFormat("a").format(new Date());
-            Cursor cursor = DBAdapter.getInstance().getAllEntries();
+        DBAdapter.getMainDBInstance().open();
+        if(DatabaseEntries.getInstance().getRecordsCount() != 0) {
+            Cursor cursor = DatabaseEntries.getInstance().getAllRecords();
             if(cursor != null && cursor.moveToFirst()) {
                 do {
                     String currentTime = new SimpleDateFormat("MM/dd/yyyy hh:mm a").format(new Date());
+                    String contact = cursor.getString(cursor.getColumnIndex(DatabaseEntries.KEY_CONTACT));
+                    String number = cursor.getString(cursor.getColumnIndex(DatabaseEntries.KEY_NUMBER));
+                    String date = cursor.getString(cursor.getColumnIndex(DatabaseEntries.KEY_DATE));
+                    String content = cursor.getString(cursor.getColumnIndex(DatabaseEntries.KEY_CONTENT));
+                    int frequency = cursor.getInt(cursor.getColumnIndex(DatabaseEntries.KEY_FREQUENCY));
+                    long id = cursor.getLong(cursor.getColumnIndex(DatabaseEntries.KEY_ROWID));
 
                     /*
-                    Log.d(TAG, currentTime);
-                    Log.d(TAG, entryTime);
-                    Log.d(TAG, cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_CONTACT)));
-                    Log.d(TAG, cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_NUMBER)));
-                    Log.d(TAG, cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_CONTENT)));
-                    */
-
-                    String contact = cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_CONTACT));
-                    String number = cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_NUMBER));
-                    String date = cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_DATE));
-                    String time = cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_TIME));
-                    String content = cursor.getString(cursor.getColumnIndex(DBAdapter.KEY_CONTENT));
-                    int frequency = cursor.getInt(cursor.getColumnIndex(DBAdapter.KEY_FREQUENCY));
-                    long id = cursor.getLong(cursor.getColumnIndex(DBAdapter.KEY_ROWID));
-
                     if(currentTime.equals(date + " " + time)) {
                         sendEntry(number, content);
                         checkDateChange(id, contact, number, date, time, content, frequency);
                     }
+                    */
                 } while(cursor.moveToNext());
                 cursor.close();
             }
         }
-        DBAdapter.getInstance().close();
+        DBAdapter.getMainDBInstance().close();
     }
 
     private void sendEntry(String number, String content) {
@@ -97,7 +95,7 @@ public class MessageSender extends IntentService {
             cal.setTime(newDate);
             switch(frequency) {
                 case Frequency.ONCE:
-                    TextsListActivity.instance.updateEntries(id, null, null, null, null, null, frequency, Mode.DELETE);
+                    //TextsListActivity.instance.updateEntries(id, null, null, null, null, null, frequency, Mode.DELETE);
                     break;
                 case Frequency.DAILY:
                     cal.add(Calendar.DAY_OF_MONTH, 1);
@@ -111,9 +109,17 @@ public class MessageSender extends IntentService {
             }
             newDate = cal.getTime();
             newDateString = new SimpleDateFormat("MM/dd/yyyy").format(newDate);
-            TextsListActivity.instance.updateEntries(id, contact, number, newDateString, time, content, frequency, Mode.UPDATE);
+            communicator.updateEntries(id, contact, number, newDateString, time, content, frequency, Mode.UPDATE);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+    }
+
+    public interface Communicator {
+        public void updateEntries(long id, String contact, String number, String date, String time, String content, int frequency, int mode);
+    }
+
+    public static void setCommunicator(Communicator comm) {
+        communicator = comm;
     }
 }

@@ -17,6 +17,7 @@ public class ContactListGenerator {
 
     private Activity activity;
     private static ArrayList<Contact> contacts;
+
     private static ContactListGenerator instance = null;
 
     public static ContactListGenerator getInstance() {
@@ -45,13 +46,16 @@ public class ContactListGenerator {
                 String id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 if(Integer.parseInt(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
                     Cursor pCur = activity.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?", new String[]{id}, null);
-                    Contact contact = new Contact();
-                    contact.setName(pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
-                    contact.setNumber(pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
-                    contacts.add(contact);
+                    while (pCur != null && pCur.moveToNext()) {
+                        Contact contact = new Contact();
+                        contact.setName(pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)));
+                        contact.setNumber(pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                        contacts.add(contact);
+                        break;
+                    }
+                    pCur.close();
                 }
             } while (cursor.moveToNext()) ;
-            cursor.close();
         }
     }
 
@@ -60,17 +64,19 @@ public class ContactListGenerator {
     }
 
     public class Contact {
-
         private String name;
         private String number;
 
         public Contact() {
+            name = "";
+            number = "";
         }
 
         public Contact(String name, String number) {
             this.name = name;
             this.number = number;
         }
+
 
         public String getName() {
             return name;

@@ -1,52 +1,44 @@
 package com.automatext.crysco.app;
 import static com.automatext.crysco.app.GlobalConstants.*;
 
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class TextDetailsFragment extends Fragment {
 
-    private String mContact, mDate, mTime, mContent;
+    private String mName, mNumber, mDate, mTime, mContent;
     private long id;
     private int mode, mFrequency;
 
     private TextView asterisk, contact, date, time, content;
     private EditText contentEdit;
     private ImageView contactButton, dateButton, timeButton, contentButton, checkBoxOnce, checkBoxDaily, checkBoxWeekly, checkBoxMonthly;
-    private ViewGroup layout;
 
     private GestureDetector gDetector;
 
     private Communicator communicator;
 
-    public static enum Field {
-        NULL,
-        CONTACT,
-        DATE,
-        TIME,
-        CONTENT
-    }
-
     private boolean editMode = false;
     private boolean changed = false;
-    private boolean saved = false;
 
     private Field field;
 
@@ -59,49 +51,37 @@ public class TextDetailsFragment extends Fragment {
 
         if(getArguments() != null) {
             mode = getArguments().getInt(Tags.MODE);
-            id = getArguments().getLong(Tags.ID);
-            if(mode == Mode.UPDATE) {
-                mContact = getArguments().getString(Tags.CONTACT);
-                mDate = getArguments().getString(Tags.DATE);
-                mTime = getArguments().getString(Tags.TIME);
-                mContent = getArguments().getString(Tags.CONTENT);
-                mFrequency = getArguments().getInt(Tags.FREQUENCY);
+            Entry entry = getArguments().getParcelable(Tags.ENTRY);
+            if(entry != null) {
+                id = entry.getID();
+                mName = entry.getName();
+                mNumber = entry.getNumber();
+                mDate = entry.getDate();
+                mTime = entry.getTime();
+                mContent = entry.getContent();
+                mFrequency = entry.getFrequency();
             }
         } else if(savedInstanceState != null) {
-            mContact = savedInstanceState.getString(Tags.CONTACT);
-            mContent = savedInstanceState.getString(Tags.CONTENT);
-            mDate = savedInstanceState.getString(Tags.DATE);
-            mTime = savedInstanceState.getString(Tags.TIME);
-            mFrequency = savedInstanceState.getInt(Tags.FREQUENCY);
             id = savedInstanceState.getLong(Tags.ID);
             mode = savedInstanceState.getInt(Tags.MODE);
+            mName = savedInstanceState.getString(Tags.NAME);
+            mNumber = savedInstanceState.getString(Tags.NUMBER);
+            mContent = savedInstanceState.getString(Tags.CONTENT);
+            mDate = savedInstanceState.getString(Tags.DATE).substring(0, 10);
+            mTime = savedInstanceState.getString(Tags.TIME).substring(11, 16);
+            mFrequency = savedInstanceState.getInt(Tags.FREQUENCY);
         }
 
         initializeViews(v);
         registerButtonClickCallback();
 
-        // DELETE THIS!!!!!!!!!!!!!!!
-        initializeScreenRotateButton(v);
-
         return v;
-    }
-
-    private void initializeScreenRotateButton(View v) {
-        Button screenChange = (Button) v.findViewById(R.id.buttonScreenChange);
-        screenChange.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                else
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
-        });
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(Tags.CONTACT, mContact);
+        outState.putString(Tags.NAME, mName);
+        outState.putString(Tags.NUMBER, mNumber);
         outState.putString(Tags.DATE, mDate);
         outState.putString(Tags.TIME, mTime);
         outState.putString(Tags.CONTENT, mContent);
@@ -116,20 +96,23 @@ public class TextDetailsFragment extends Fragment {
         asterisk = (TextView) v.findViewById(R.id.textViewChanged);
         asterisk.setVisibility(View.INVISIBLE);
         contact = (TextView) v.findViewById(R.id.textViewContact);
-        contact.setText(mContact);
+        contact.setText(mName + " #" + mNumber);
         content = (TextView) v.findViewById(R.id.textViewContent);
         content.setText(mContent);
         date = (TextView) v.findViewById(R.id.textViewDate);
-        date.setText(mDate);
         time = (TextView) v.findViewById(R.id.textViewTime);
-        time.setText(mTime);
+        try {
+            date.setText(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(mDate)));
+            time.setText(new SimpleDateFormat("h:mm a").format(new SimpleDateFormat("HH:mm").parse(mTime)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         checkBoxDaily = (ImageView) v.findViewById(R.id.imageViewDaily);
         checkBoxOnce = (ImageView) v.findViewById(R.id.imageViewOnce);
         checkBoxWeekly = (ImageView) v.findViewById(R.id.imageViewWeekly);
         checkBoxMonthly = (ImageView) v.findViewById(R.id.imageViewMonthly);
 
-        layout = (ViewGroup) v.findViewById(R.id.relativeLayoutNote);
         updateCheckBoxes(false);
 
         ArrayList<TextView> textViews = new ArrayList<TextView>();
@@ -169,8 +152,17 @@ public class TextDetailsFragment extends Fragment {
     }
 
     private void changeAllFonts(ArrayList<TextView> textViews) {
+        Typeface font = null;
         for(TextView textView : textViews) {
-            textView.setTypeface(CUSTOM_FONT);
+            try {
+                font = CustomFont.getFont("CrayonCrumble");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.e(TAG, "Font Not Found");
+                font = Typeface.DEFAULT;
+            } finally {
+                textView.setTypeface(font);
+            }
         }
     }
 
@@ -197,7 +189,7 @@ public class TextDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 field = Field.TIME;
-                TimeDialogFragment timeDialogFragment = new TimeDialogFragment();
+                TimeDialogFragment timeDialogFragment = new TimeDialogFragment(Field.TIME);
                 timeDialogFragment.show(getFragmentManager(), "TimeDialogFragment");
             }
         });
@@ -254,22 +246,18 @@ public class TextDetailsFragment extends Fragment {
 
     private void updateCheckBoxes(boolean changed) {
         clearAllCheckBoxes();
-        Drawable check = getResources().getDrawable(R.drawable.check);
+        Drawable check = getResources().getDrawable(R.drawable.check_white);
         switch(mFrequency) {
             case Frequency.ONCE:
-                layout.setBackground(getResources().getDrawable(R.drawable.note_yellow));
                 checkBoxOnce.setImageDrawable(check);
                 break;
             case Frequency.DAILY:
-                layout.setBackground(getResources().getDrawable(R.drawable.note_green));
                 checkBoxDaily.setImageDrawable(check);
                 break;
             case Frequency.WEEKLY:
-                layout.setBackground(getResources().getDrawable(R.drawable.note_pink));
                 checkBoxWeekly.setImageDrawable(check);
                 break;
             case Frequency.MONTHLY:
-                layout.setBackground(getResources().getDrawable(R.drawable.note_blue));
                 checkBoxMonthly.setImageDrawable(check);
                 break;
             default:
@@ -282,7 +270,7 @@ public class TextDetailsFragment extends Fragment {
     }
 
     private void clearAllCheckBoxes() {
-        Drawable clear = getResources().getDrawable(R.drawable.checkbox);
+        Drawable clear = getResources().getDrawable(R.drawable.checkbox_white);
         checkBoxOnce.setImageDrawable(clear);
         checkBoxDaily.setImageDrawable(clear);
         checkBoxWeekly.setImageDrawable(clear);
@@ -291,8 +279,15 @@ public class TextDetailsFragment extends Fragment {
 
     public boolean saveEntry() {
         if(checkFields()) {
-            saved = true;
-            communicator.updateEntries(id, EntryParser.parseName(mContact), EntryParser.parseNumber(mContact), mDate, mTime, mContent, mFrequency);
+            Entry entry = new Entry();
+            entry.setID(id);
+            entry.setName(mName);
+            entry.setNumber(mNumber);
+            entry.setDate(mDate);
+            entry.setTime(mTime);
+            entry.setContent(mContent);
+            entry.setFrequency(mFrequency);
+            communicator.updateEntries(entry);
             Toast.makeText(getActivity(), "Entry Saved", Toast.LENGTH_SHORT).show();
             getActivity().finish();
             return true;
@@ -304,14 +299,25 @@ public class TextDetailsFragment extends Fragment {
         switch (field) {
             case CONTACT:
                 contact.setText(output);
-                mContact = output;
+                mName = Entry.EntryParser.parseName(output);
+                mNumber = Entry.EntryParser.parseNumber(output);
                 break;
             case DATE:
-                date.setText(output);
+                try {
+                    date.setText(new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(output)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    date.setText(output);
+                }
                 mDate = output;
                 break;
             case TIME:
-                time.setText(output);
+                try {
+                    time.setText(new SimpleDateFormat("hh:mm a").format(new SimpleDateFormat("HH:mm").parse(output)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    time.setText(output);
+                }
                 mTime = output;
                 break;
             case CONTENT:
@@ -327,23 +333,7 @@ public class TextDetailsFragment extends Fragment {
     }
 
     private boolean checkFields() {
-        return !mContact.contains("(empty)") && !mDate.isEmpty() && !mTime.isEmpty() && !mContent.isEmpty();
-    }
-
-    public String getContact() {
-        return this.mContact;
-    }
-
-    public String getDate() {
-        return this.mDate;
-    }
-
-    public String getTime() {
-        return this.mTime;
-    }
-
-    public String getContent() {
-        return this.mContent;
+        return !mName.isEmpty() && !mNumber.isEmpty() && !mDate.isEmpty() && !mTime.isEmpty() && !mContent.isEmpty();
     }
 
     public int getMode() {
@@ -358,10 +348,6 @@ public class TextDetailsFragment extends Fragment {
         return changed;
     }
 
-    public boolean getSaved() {
-        return saved;
-    }
-
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         private final int SWIPE_MIN_DISTANCE = (int)(0.3 * SCREEN_WIDTH);
@@ -374,7 +360,6 @@ public class TextDetailsFragment extends Fragment {
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
             if(e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY ) {
                 //bottom to top
                 ClearEntryDialogFragment clearEntryDialogFragment = new ClearEntryDialogFragment("This will delete the entry. Continue?", false);
@@ -382,13 +367,13 @@ public class TextDetailsFragment extends Fragment {
             } else if(e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
                 //top to bottom
                 if(!saveEntry())
-                    Toast.makeText(getActivity(), "Did you leave any fields blank?", Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(), "Did you leave any fields blank?", Toast.LENGTH_SHORT).show();
             return super.onFling(e1, e2, velocityX, velocityY);
         }
     }
 
     public interface Communicator {
-        public void updateEntries(long id, String name, String number, String date, String time, String content, int frequency);
+        public void updateEntries(Entry entry);
     }
 
     public void setCommunicator(Communicator comm) {

@@ -1,0 +1,91 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.automatext.crysco.app.AutoReplyListActivity"
+    android:focusable="false"
+    android:background="@drawable/chalkboard">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listViewReplies"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:padding="2dp"
+        android:layout_above="@+id/textViewAddReply" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        android:id="@+id/textViewAddReply"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:textColor="@color/White"
+        android:textSize="50dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="25dp"
+        android:paddingLeft="25dp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listViewReplies"
+        android:id="@+id/relativeLayoutSwitch"
+        android:layout_toLeftOf="@+id/textViewAddReply"
+        android:layout_toRightOf="@+id/space">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="ON"
+            android:id="@+id/textViewOn"
+            android:textSize="25dp"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/White"
+            android:layout_alignLeft="@+id/imageViewSwitchOutline"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="OFF"
+            android:id="@+id/textViewOff"
+            android:textColor="@color/White"
+            android:textSize="25dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/imageViewSwitchOutline"
+            android:layout_marginRight="20dp"
+            android:gravity="center_vertical" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageViewSlider"
+            android:clickable="true"
+            android:src="@drawable/slider"
+            android:focusableInTouchMode="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/imageViewSwitchOutline"
+            android:src="@drawable/switch_outline" />
+
+    </RelativeLayout>
+
+    <Space
+        android:layout_width="58dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/listViewReplies"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/space" />
+
+</RelativeLayout>

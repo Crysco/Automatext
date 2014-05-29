@@ -3,6 +3,8 @@ package com.automatext.crysco.app;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import static com.automatext.crysco.app.GlobalConstants.*;
 
@@ -31,6 +33,26 @@ public class TextDetailsActivity extends FragmentActivity implements TextDetails
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         //if(!fragText.getSaved() && fragText.getMode() == NEW)
@@ -47,24 +69,27 @@ public class TextDetailsActivity extends FragmentActivity implements TextDetails
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog, String output, TextDetailsFragment.Field field) {
+    public void onDialogPositiveClick(DialogFragment dialog, String output, Field field) {
         fragText.updateField(output, field);
     }
 
     @Override
     public void onClearEntryDialogPositiveClick(DialogFragment dialog, boolean backPressed) {
-        if(!backPressed || fragText.getMode() == NEW)
-            communicator.updateEntries(fragText.getID(), null, null, null, null, null, 0, DELETE);
+        if(!backPressed || fragText.getMode() == Mode.NEW) {
+            Entry entry = new Entry();
+            entry.setID(fragText.getID());
+            communicator.updateEntries(entry, Mode.DELETE);
+        }
         finish();
     }
 
     @Override
-    public void updateEntries(long id, String name, String number, String date, String time, String content, int frequency) {
-        communicator.updateEntries(id, name, number, date, time, content, frequency, fragText.getMode());
+    public void updateEntries(Entry entry) {
+        communicator.updateEntries(entry, fragText.getMode());
     }
 
     public interface Communicator {
-        public void updateEntries(long id, String name, String number, String date, String time, String content, int frequency, int mode);
+        public void updateEntries(Entry entry, int mode);
     }
 
     public static void setCommunicator(Communicator comm) {

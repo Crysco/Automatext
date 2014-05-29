@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/replyLayout"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:id="@+id/textViewReplyTitleList"
+        android:textSize="25dp"
+        android:textColor="@color/White"
+        android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="(10:00"
+            android:id="@+id/textViewReplyStartTimeList"
+            android:textSize="25dp"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@+id/textViewReplyTitleList"
+            android:layout_marginLeft="5dp"
+            android:layout_above="@+id/textViewReplyMon"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" - 11:00)"
+            android:id="@+id/textViewReplyEndTimeList"
+            android:textSize="25dp"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@+id/textViewReplyStartTimeList"
+            android:layout_marginLeft="5dp"
+            android:layout_above="@+id/textViewReplyTue"
+            android:layout_alignParentTop="true"
+            android:gravity="center_vertical" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sun"
+        android:id="@+id/textViewReplySun"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        android:layout_below="@+id/textViewReplyTitleList"
+        android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mon"
+            android:id="@+id/textViewReplyMon"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/textViewReplyTitleList"
+            android:layout_toRightOf="@+id/textViewReplySun"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tue"
+            android:id="@+id/textViewReplyTue"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/textViewReplyTitleList"
+            android:layout_toRightOf="@+id/textViewReplyMon"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wed"
+            android:id="@+id/textViewReplyWed"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/textViewReplyTitleList"
+            android:layout_toRightOf="@+id/textViewReplyTue"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thu"
+            android:id="@+id/textViewReplyThu"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/textViewReplyTitleList"
+            android:layout_toRightOf="@+id/textViewReplyWed"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Fri"
+            android:id="@+id/textViewReplyFri"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/textViewReplyTitleList"
+            android:layout_toRightOf="@+id/textViewReplyThu"
+            android:layout_marginLeft="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sat"
+            android:id="@+id/textViewReplySat"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_below="@+id/textViewReplyTitleList"
+            android:layout_toRightOf="@+id/textViewReplyFri"
+            android:layout_marginLeft="5dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewSilence"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Active"
+            android:id="@+id/textViewActive"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/imageViewSilence"
+            android:layout_alignEnd="@+id/imageViewSilence"
+            android:textColor="@color/White" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -301,7 +301,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageViewMonthly"
-                    android:src="@drawable/checkbox"
+                    android:src="@drawable/checkbox_white"
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/textViewMonthly"
                     android:clickable="true" />
@@ -320,7 +320,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageViewWeekly"
-                    android:src="@drawable/checkbox"
+                    android:src="@drawable/checkbox_white"
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/textViewWeekly"
                     android:clickable="true" />
@@ -339,7 +339,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageViewDaily"
-                    android:src="@drawable/checkbox"
+                    android:src="@drawable/checkbox_white"
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/textViewDaily"
                     android:clickable="true" />
@@ -358,7 +358,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/imageViewOnce"
-                    android:src="@drawable/checkbox"
+                    android:src="@drawable/checkbox_white"
                     android:layout_alignParentTop="true"
                     android:layout_toRightOf="@+id/textViewOnce"
                     android:clickable="true" />

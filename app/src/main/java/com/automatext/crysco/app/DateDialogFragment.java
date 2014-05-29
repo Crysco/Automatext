@@ -1,4 +1,5 @@
 package com.automatext.crysco.app;
+import static com.automatext.crysco.app.GlobalConstants.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -20,7 +21,7 @@ public class DateDialogFragment extends DialogFragment {
     }
 
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog, String output, TextDetailsFragment.Field field);
+        public void onDialogPositiveClick(DialogFragment dialog, String output, Field field);
     }
 
     @Override
@@ -57,9 +58,9 @@ public class DateDialogFragment extends DialogFragment {
                                 calendar.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
                                 calendar.set(Calendar.YEAR, datePicker.getYear());
 
-                                String date = new SimpleDateFormat("MM/dd/yyyy").format(calendar.getTime());
+                                String date = new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
 
-                                mListener.onDialogPositiveClick(DateDialogFragment.this, date, TextDetailsFragment.Field.DATE);
+                                mListener.onDialogPositiveClick(DateDialogFragment.this, date, Field.DATE);
                             }
                         })
                 .setNegativeButton("Cancel",

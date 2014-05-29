@@ -1,4 +1,5 @@
 package com.automatext.crysco.app;
+import static com.automatext.crysco.app.GlobalConstants.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,12 +17,14 @@ import java.util.Calendar;
 public class TimeDialogFragment extends DialogFragment {
 
     private NoticeDialogListener nListener;
+    private Field field;
 
-    public TimeDialogFragment() {
+    public TimeDialogFragment(Field field) {
+        this.field = field;
     }
 
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog, String output, TextDetailsFragment.Field field);
+        public void onDialogPositiveClick(DialogFragment dialog, String output, Field field);
     }
 
     @Override
@@ -53,15 +56,13 @@ public class TimeDialogFragment extends DialogFragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 TimePicker timePicker = (TimePicker) ((Dialog) dialogInterface).findViewById(R.id.timePicker);
 
-                                String meridian = timePicker.getCurrentHour() > 11 ? "PM" : "AM";
-
                                 Calendar calendar = Calendar.getInstance();
-                                calendar.set(Calendar.HOUR, timePicker.getCurrentHour());
+                                calendar.set(Calendar.HOUR_OF_DAY, timePicker.getCurrentHour());
                                 calendar.set(Calendar.MINUTE, timePicker.getCurrentMinute());
 
-                                String time = new SimpleDateFormat("hh:mm").format(calendar.getTime());
+                                String time = new SimpleDateFormat("HH:mm").format(calendar.getTime());
 
-                                nListener.onDialogPositiveClick(TimeDialogFragment.this, time + " " + meridian, TextDetailsFragment.Field.TIME);
+                                nListener.onDialogPositiveClick(TimeDialogFragment.this, time, field);
                             }
                         })
                 .setNegativeButton("Cancel",

@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/corkboard"
+    android:background="@drawable/chalkboard"
     tools:context="com.automatext.crysco.app.TextDetailsActivity"
     android:weightSum="1"
     android:clickable="true">
@@ -25,7 +25,6 @@
         android:weightSum="1"
         android:layout_below="@+id/space"
         android:id="@+id/relativeLayoutNote"
-        android:background="@drawable/note_yellow"
         android:paddingLeft="40dp"
         android:paddingRight="40dp">
 
@@ -45,7 +44,8 @@
                 android:textSize="30dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentTop="true"
-                android:gravity="center_vertical" />
+                android:gravity="center_vertical"
+                android:textColor="@color/White" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -85,21 +85,22 @@
                 android:layout_height="wrap_content"
                 android:text="TO:"
                 android:id="@+id/textViewTitleContact"
-                android:textSize="16dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_alignTop="@+id/textViewContact"
                 android:layout_alignBottom="@+id/textViewContact"
                 android:gravity="center_vertical"
-                android:paddingRight="3dp" />
+                android:paddingRight="3dp"
+                android:textColor="@color/White" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewContact"
-                android:textSize="16dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_toLeftOf="@+id/imageViewContact"
                 android:layout_toRightOf="@+id/textViewTitleContact"
                 android:layout_centerVertical="true"
-                android:textColor="#646464" />
+                android:textColor="@color/White" />
 
 
             <ImageView
@@ -130,17 +131,18 @@
                 android:gravity="center_vertical"
                 android:layout_alignBottom="@+id/textViewDate"
                 android:paddingRight="3dp"
-                android:textSize="16dp" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/White" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewDate"
-                android:textSize="16dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_toLeftOf="@+id/imageViewDate"
                 android:layout_toRightOf="@+id/textViewTitleDate"
                 android:layout_centerVertical="true"
-                android:textColor="#646464" />
+                android:textColor="@color/White" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -166,21 +168,22 @@
                 android:layout_height="wrap_content"
                 android:text="TIME:"
                 android:id="@+id/textViewTitleTime"
-                android:textSize="16dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_alignTop="@+id/textViewTime"
                 android:layout_alignBottom="@+id/textViewTime"
                 android:gravity="center_vertical"
-                android:paddingRight="3dp" />
+                android:paddingRight="3dp"
+                android:textColor="@color/White" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/textViewTime"
-                android:textSize="16dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_toLeftOf="@+id/imageViewTime"
                 android:layout_toRightOf="@+id/textViewTitleTime"
                 android:layout_centerVertical="true"
-                android:textColor="#646464" />
+                android:textColor="@color/White" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -206,20 +209,21 @@
                 android:layout_height="wrap_content"
                 android:text="TEXT:"
                 android:id="@+id/textViewTitleContent"
-                android:textSize="16dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:paddingRight="3dp"
-                android:layout_marginTop="12dp" />
+                android:layout_marginTop="12dp"
+                android:textColor="@color/White" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:id="@+id/textViewContent"
-                android:textSize="16dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_alignLeft="@+id/editTextContent"
                 android:layout_alignStart="@+id/editTextContent"
                 android:layout_toLeftOf="@+id/imageViewContent"
                 android:layout_alignTop="@+id/textViewTitleContent"
-                android:textColor="#646464" />
+                android:textColor="#FFFFFF" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -262,34 +266,36 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Once"
-            android:id="@+id/textViewOnce" />
+            android:id="@+id/textViewOnce"
+            android:textColor="@color/White" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageViewMonthly"
-            android:src="@drawable/checkbox"
+            android:src="@drawable/checkbox_white"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textViewMonthly"
-            android:clickable="true" />
+            android:clickable="true"
+            android:layout_marginRight="10dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Monthly"
             android:id="@+id/textViewMonthly"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/imageViewWeekly"
-            android:layout_marginLeft="25dp" />
+            android:textColor="@color/White" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageViewWeekly"
-            android:src="@drawable/checkbox"
+            android:src="@drawable/checkbox_white"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textViewWeekly"
             android:clickable="true" />
@@ -297,18 +303,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Weekly"
             android:id="@+id/textViewWeekly"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/imageViewDaily"
-            android:layout_marginLeft="25dp" />
+            android:textColor="@color/White" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageViewDaily"
-            android:src="@drawable/checkbox"
+            android:src="@drawable/checkbox_white"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textViewDaily"
             android:clickable="true" />
@@ -316,30 +322,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Daily"
             android:id="@+id/textViewDaily"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/imageViewOnce"
-            android:layout_marginLeft="25dp" />
+            android:textColor="@color/White" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageViewOnce"
-            android:src="@drawable/checkbox"
+            android:src="@drawable/checkbox_white"
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/textViewOnce"
             android:clickable="true" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Change Screen"
-            android:id="@+id/buttonScreenChange"
-            android:layout_below="@+id/imageViewOnce"
-            android:layout_alignLeft="@+id/textViewOnce"
-            android:layout_alignStart="@+id/textViewOnce" />
     </RelativeLayout>
 
 </LinearLayout>

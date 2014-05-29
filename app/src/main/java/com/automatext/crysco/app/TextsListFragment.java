@@ -1,12 +1,8 @@
 package com.automatext.crysco.app;
 import static com.automatext.crysco.app.GlobalConstants.*;
 
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.database.Cursor;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,10 +12,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TextsListFragment extends Fragment {
 
@@ -48,9 +47,8 @@ public class TextsListFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
+    public void onStart() {
         super.onResume();
-        checkForEmptyEntries();
         refreshList();
     }
 
@@ -61,17 +59,36 @@ public class TextsListFragment extends Fragment {
     }
 
 
-    private void checkForEmptyEntries() {
-        for(Entry entry : entries) {
-            if(entry.getContact().contains("(empty)"))
-                communicator.updateEntries(entry.getId(), null, null, null, null, null, 0, Mode.DELETE);
+    public void checkForEmptyEntries() {
+        DBAdapter.getMainDBInstance().open();
+        Cursor cursor = DatabaseEntries.getInstance().getAllRecords();
+        if(cursor != null && cursor.moveToFirst()) {
+            do {
+                if(cursor.getString(cursor.getColumnIndex(DatabaseEntries.KEY_CONTACT)).isEmpty()) {
+                    Log.d(TAG, "Clearing empty reply");
+                    Entry entry = new Entry();
+                    entry.setID(cursor.getLong(cursor.getColumnIndex(DatabaseReplies.KEY_ROWID)));
+                    communicator.updateEntries(entry, Mode.DELETE);
+                }
+            } while (cursor.moveToNext());
+            cursor.close();
         }
+        DBAdapter.getMainDBInstance().close();
     }
 
     private void initializeViews(View v) {
         entryList = (GridView) v.findViewById(R.id.gridViewEntries);
         add = (TextView) v.findViewById(R.id.textViewAdd);
-        add.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/BeeMarkerInk.ttf"));
+        Typeface font = null;
+        try {
+            font = CustomFont.getFont("CrayonCrumble");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.d(TAG, "Font could not be found");
+            font = Typeface.DEFAULT;
+        } finally {
+            add.setTypeface(font);
+        }
     }
 
     private void registerListItemClickCallback() {
@@ -81,7 +98,8 @@ public class TextsListFragment extends Fragment {
         entryList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                communicator.respond(entries.get(i).getId(), Mode.UPDATE);
+                Log.d(TAG, "Id is " + Long.toString((entries.get(i).getID())));
+                communicator.respond(entries.get(i).getID(), Mode.UPDATE);
             }
         });
     }
@@ -90,21 +108,22 @@ public class TextsListFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DBAdapter.getInstance().open();
-                long newId = DBAdapter.getInstance().insertEntry("(empty)", "", "", "", "", 0);
-                DBAdapter.getInstance().close();
+                DBAdapter.getMainDBInstance().open();
+                long newId = DatabaseEntries.getInstance().insertRecord("", "", new SimpleDateFormat("yyyy-MM-dd").format(new Date()), new SimpleDateFormat("HH:mm").format(new Date()), "", 0);
+                Log.d(TAG, "New id is " + Long.toString(newId));
+                DBAdapter.getMainDBInstance().close();
                 communicator.respond(newId, Mode.NEW);
             }
         });
     }
 
-    public void updateList(long id, String name, String date, String time, String content, int frequency, int mode) {
+    public void updateList(Entry entry, int mode) {
         if(mode == Mode.NEW)
-            entries.add(new Entry(name, date, time, content, frequency, id));
+            entries.add(entry);
         else {
             int index = -1;
             for (int i = 0; i < entries.size(); i++) {
-                if(entries.get(i).getId() == id) {
+                if(entries.get(i).getID() == entry.getID()) {
                     index = i;
                     break;
                 }
@@ -113,11 +132,7 @@ public class TextsListFragment extends Fragment {
                 Log.d(TAG, "Could not locate entry.");
             else {
                 if(mode == Mode.UPDATE) {
-                    entries.get(index).setContact(name);
-                    entries.get(index).setDate(date);
-                    entries.get(index).setTime(time);
-                    entries.get(index).setContent(content);
-                    entries.get(index).setFrequency(frequency);
+                    entries.set(index, entry);
                 } else if (mode == Mode.DELETE)
                     entries.remove(index);
             }
@@ -143,46 +158,43 @@ public class TextsListFragment extends Fragment {
             final View v = getActivity().getLayoutInflater().inflate(R.layout.entry, parent, false);
 
             TextView contact = (TextView) v.findViewById(R.id.textViewContactList);
-            contact.setText(entries.get(i).getContact());
+            contact.setText(entries.get(i).getName());
             TextView date = (TextView) v.findViewById(R.id.textViewDateList);
             date.setText(entries.get(i).getDate());
             TextView time = (TextView) v.findViewById(R.id.textViewTimeList);
             time.setText(entries.get(i).getTime());
 
-            RelativeLayout entryLayout = (RelativeLayout) v.findViewById(R.id.entryLayout);
-            Bitmap temp = null, tempResized;
-            int frequency = entries.get(i).getFrequency();
-            switch(frequency) {
-                case Frequency.ONCE:
-                    temp = BitmapFactory.decodeResource(getResources(), R.drawable.note_yellow);
-                    break;
-                case Frequency.DAILY:
-                    temp = BitmapFactory.decodeResource(getResources(), R.drawable.note_green);
-                    break;
-                case Frequency.WEEKLY:
-                    temp = BitmapFactory.decodeResource(getResources(), R.drawable.note_pink);
-                    break;
-                case Frequency.MONTHLY:
-                    temp = BitmapFactory.decodeResource(getResources(), R.drawable.note_blue);
-                    break;
+            String timeString = entries.get(i).getTime();
+            String dateString = entries.get(i).getDate();
+            try {
+                timeString = new SimpleDateFormat("h:mm a").format(new SimpleDateFormat("HH:mm").parse(timeString));
+                dateString = new SimpleDateFormat("MM/dd/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(dateString));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } finally {
+                time.setText(timeString);
+                date.setText(dateString);
             }
-            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-                tempResized = Bitmap.createScaledBitmap(temp, (int)(0.2f * SCREEN_HEIGHT), (int)(0.2f * SCREEN_HEIGHT), false);
-            else
-                tempResized = Bitmap.createScaledBitmap(temp, (int)(0.2f * SCREEN_WIDTH), (int)(0.2f * SCREEN_WIDTH), false);
-            entryLayout.setBackground(new BitmapDrawable(getResources(), tempResized));
 
-            contact.setTypeface(CUSTOM_FONT);
-            date.setTypeface(CUSTOM_FONT);
-            time.setTypeface(CUSTOM_FONT);
-
+            Typeface font = null;
+            try {
+                font = CustomFont.getFont("CrayonCrumble");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.e(TAG, "Font Not Found");
+                font = Typeface.DEFAULT;
+            } finally {
+                contact.setTypeface(font);
+                date.setTypeface(font);
+                time.setTypeface(font);
+            }
             return v;
         }
     }
 
     public interface Communicator {
         public void respond(long index, int a);
-        public void updateEntries(long id, String name, String number, String date, String time, String content, int frequency, int mode);
+        public void updateEntries(Entry entry, int mode);
     }
 
     public void setCommunicator(Communicator comm) {

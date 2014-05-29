@@ -1,4 +1,5 @@
 package com.automatext.crysco.app;
+import static com.automatext.crysco.app.GlobalConstants.*;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,7 +35,7 @@ public class ContactsDialogFragment extends DialogFragment {
     }
 
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(DialogFragment dialog, String output, TextDetailsFragment.Field field);
+        public void onDialogPositiveClick(DialogFragment dialog, String output, Field field);
     }
 
     @Override
@@ -89,7 +90,7 @@ public class ContactsDialogFragment extends DialogFragment {
                         String output = name.getText().toString() + " #" + number.getText().toString();
                         if(!output.equals("")) {
                             //mListener.onDialogPositiveClick(ContactsDialogFragment.this, output, TextDetailsFragment.Field.CONTACT);
-                            mListener.onDialogPositiveClick(ContactsDialogFragment.this, output, TextDetailsFragment.Field.CONTACT);
+                            mListener.onDialogPositiveClick(ContactsDialogFragment.this, output, Field.CONTACT);
                         }
                         else {
                             //MAKE TOAST
@@ -132,7 +133,7 @@ public class ContactsDialogFragment extends DialogFragment {
                             String theName = name.getText().toString();
                             String theNumber = number.getText().toString();
                             if(!theName.equals("") && !theNumber.equals("")) {
-                                mListener.onDialogPositiveClick(ContactsDialogFragment.this, theName + " #" + theNumber, TextDetailsFragment.Field.CONTACT);
+                                mListener.onDialogPositiveClick(ContactsDialogFragment.this, theName + " #" + theNumber, Field.CONTACT);
                             } else {
                                 //MAKE TOAST!!!!!!!!!
                             }
