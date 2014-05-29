@@ -3,6 +3,10 @@ package com.automatext.crysco.app;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Reply implements Parcelable {
 
     private String title;
@@ -16,24 +20,13 @@ public class Reply implements Parcelable {
 
     public Reply() {
         title = "";
-        startTime = "";
-        endTime = "";
+        startTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());
+        endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date());;
         content = "";
-        days = "";
+        days = "0000000";
         active = 0;
         silence = 1;
         id = 0;
-    }
-
-    public Reply(String title, String startTime, String endTime, String content, String days, int active, int silence, long id) {
-        this.title = title;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.id = id;
-        this.content = content;
-        this.active = active;
-        this.silence = silence;
-        this.days = days;
     }
 
     public Reply(Parcel source) {

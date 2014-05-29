@@ -310,8 +310,8 @@ public class AutoReplyDetailsFragment extends Fragment {
             reply.setTitle(mTitle);
             reply.setId(id);
             reply.setDays(mDays);
-            reply.setStartTime("yyyy-MM-dd " + mStartTime);
-            reply.setEndTime("yyyy-MM-dd " + mEndTime);
+            reply.setStartTime(mStartTime);
+            reply.setEndTime(mEndTime);
             reply.setContent(mContent);
             reply.setSilence(mSpeaker);
             communicator.updateReplies(reply);
@@ -339,7 +339,7 @@ public class AutoReplyDetailsFragment extends Fragment {
                 break;
             case END_TIME:
                 try {
-                    endTime.setText(new SimpleDateFormat("hh:mm a").format(new SimpleDateFormat("HH:mm").parse(output)));
+                    endTime.setText(new SimpleDateFormat("h:mm a").format(new SimpleDateFormat("HH:mm").parse(output)));
                 } catch (ParseException e) {
                     e.printStackTrace();
                     endTime.setText(output);

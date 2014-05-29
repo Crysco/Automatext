@@ -64,7 +64,7 @@ public class DatabaseReplies extends Database {
                     daysToDateParser(reply.getStartTime(), reply.getDays(), true),
                     daysToDateParser(reply.getEndTime(), reply.getDays(), true),
                     reply.getContent(), reply.getDays(), reply.getSilence());
-            updateRecordActiveCheck(reply.getID(), reply.getActive());
+            updateRecordActiveCheck(reply.getID(), determineActiveState(reply.getID()));
         }
         else if (mode == GlobalConstants.Mode.DELETE)
             deleteRecord(reply.getID());
@@ -202,12 +202,10 @@ public class DatabaseReplies extends Database {
         }
 
         calendar.add(Calendar.DAY_OF_MONTH, inc);
-        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time.substring(11,13)));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(time.substring(14, 16)));
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time.substring(0, 2)));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(time.substring(3, 5)));
 
-        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(calendar.getTime());
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm").format(calendar.getTime());
     }
 
     public int determineActiveState(long rowId) {

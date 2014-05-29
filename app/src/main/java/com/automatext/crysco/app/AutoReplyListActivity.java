@@ -134,9 +134,8 @@ public class AutoReplyListActivity extends FragmentActivity implements AutoReply
     @Override
     public void updateReplies(Reply reply, int mode) {
         DBAdapter.getMainDBInstance().open();
-        reply.setActive(DatabaseReplies.getInstance().determineActiveState(reply.getID()));
         DatabaseReplies.getInstance().updateRepliesDatabase(reply, mode);
-        fragment.updateList(reply, mode);
+        fragment.updateList(DatabaseReplies.getInstance().convertRowToObject(reply.getID()), mode);
         DBAdapter.getMainDBInstance().close();
         setAlarmService();
     }

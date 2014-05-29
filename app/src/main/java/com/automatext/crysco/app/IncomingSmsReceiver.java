@@ -33,7 +33,7 @@ public class IncomingSmsReceiver extends BroadcastReceiver {
 
             DBAdapter.getMainDBInstance().open();
             Cursor cursor = DatabaseReplies.getInstance().getMostRecentRecord();
-            final boolean checkOne = !(cursor.getInt(cursor.getColumnIndex(DatabaseReplies.KEY_ACTIVE)) == 0);
+            final boolean checkOne = (cursor.getInt(cursor.getColumnIndex(DatabaseReplies.KEY_ACTIVE)) == GlobalConstants.ActiveState.ACTIVE);
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             final boolean checkThree = prefs.getBoolean(SWITCH_STATE, false);
             final String replyMessage = cursor.getString(cursor.getColumnIndex(DatabaseReplies.KEY_CONTENT));
